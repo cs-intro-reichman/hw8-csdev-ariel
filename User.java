@@ -102,7 +102,7 @@
         boolean followsOtherUser = this.follows(other.getName());
         boolean otherFollowsUser = other.follows(this.name);
 
-        return false;
+        return followsOtherUser && otherFollowsUser;
     }
     /** Returns this user's name, and the names that s/he follows. */
     public String toString() {

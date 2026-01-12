@@ -73,40 +73,47 @@ public class Network {
     /** For the user with the given name, recommends another user to follow. The recommended user is
      *  the user that has the maximal mutual number of followees as the user with the given name. */
     public String recommendWhoToFollow(String name) {
-        int count = 0;
-        for (int i = 0; i < fCount; i++) {
-            if (other.follows(follows[i])) {
-            count++;
+        User user = getUser(name);
+        if (user == null) return null;
+
+    String recommendation = null;
+    int maxMutuals = -1;
+
+    for (int i = 0; i < userCount; i++) {
+        User potential = users[i];
+        String recommendedName = potential.getName();
+
+        // Use a standard if statement to check our conditions
+        // 1. Check it's not the same person
+        // 2. Check it's not someone already followed
+        if (!recommendedName.equals(name) && !user.follows(recommendedName)) {
+            
+            // If we get here, this person is a valid candidate!
+            int mutualCount = user.countMutual(potential);
+
+            if (mutualCount > maxMutuals) {
+                maxMutuals = mutualCount;
+                recommendation = recommendedName;
+            }
         }
     }
-    return count;
+    return recommendation;
 }
 
 /** Computes and returns the name of the most popular user in this network: 
  * The user who appears the most in the follow lists of all the users. */
 public String mostPopularUser() {
-    if (userCount == 0) {
-        return null;
-    }
+    if (userCount == 0) return null;
+    String mostPopular = users[0].getName();
+    int maxFollowers = followeeCount(mostPopular);
 
-    String mostPopular = null;
-    int maxFollowers = -1;
-
-    for (int i = 0; i < userCount; i++) {
-        User mostPop = users[i];
-        int currentFollowerCount = 0;
-    }
-
-    for (int j = 0; j < userCount; j++) {
-        if (i != j && users[j].follows(mostPop.getName())) {
-            currentFollowerCount++;
-            }
+    for (int i = 1; i < userCount; i++) {
+        int currentCount = followeeCount(users[i].getName());
+        if (currentCount > maxFollowers) {
+            maxFollowers = currentCount;
+            mostPopular = users[i].getName();
         }
-
-        if (currentFollowerCount > maxFollowers) {
-            maxFollowers = currentFollowerCount;
-            mostPopular = mostPop.getName();
-        }
+    }
     return mostPopular;
 }
 
