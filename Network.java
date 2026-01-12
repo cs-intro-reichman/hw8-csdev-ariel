@@ -82,16 +82,6 @@ public class Network {
     return count;
 }
 
-    /** Computes and returns the name of the most popular user in this network: 
-     *  The user who appears the most in the follow lists of all the users. */
-    public String mostPopularUser() {
-        To find the most popular user, we need to count how many "incoming" follows each user has. Since the User class knows who they follow, but not who follows them, the Network class has to look at every single user's list to tally the results.
-
-Implementation
-The logic is to iterate through every user in the network, and for each one, count how many other people follow them.
-
-Java
-
 /** Computes and returns the name of the most popular user in this network: 
  * The user who appears the most in the follow lists of all the users. */
 public String mostPopularUser() {
@@ -140,5 +130,4 @@ public String mostPopularUser() {
     }
     return sb.toString();
 }
-    }
 }
